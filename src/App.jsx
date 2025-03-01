@@ -1,5 +1,6 @@
 import Footer from "./Footer";
 import Header from "./Header";
+import ProductCard from "./ProductCard";
 import './styles.css';
 
 export default function App() {
@@ -42,60 +43,32 @@ export default function App() {
         <h2 className="text-center mb-4">Featured Products</h2>
         <div className="row">
           <div className="col-md-3 mb-4">
-            <div className="card">
-              <img
-                src="https://picsum.photos/id/20/300/200"
-                className="card-img-top"
-                alt="Product 1"
+              <ProductCard
+                imageUrl="https://picsum.photos/id/20/300/200"
+                productName="Product 1"
+                price={19.99}
               />
-              <div className="card-body">
-                <h5 className="card-title">Product 1</h5>
-                <p className="card-text">$19.99</p>
-                <a href="#" className="btn btn-primary">Add to Cart</a>
-              </div>
-            </div>
           </div>
           <div className="col-md-3 mb-4">
-            <div className="card">
-              <img
-                src="https://picsum.photos/id/1/300/200"
-                className="card-img-top"
-                alt="Product 2"
+              <ProductCard
+                imageUrl="https://picsum.photos/id/1/300/200"
+                productName="Product 2"
+                price={29.99}
               />
-              <div className="card-body">
-                <h5 className="card-title">Product 2</h5>
-                <p className="card-text">$29.99</p>
-                <a href="#" className="btn btn-primary">Add to Cart</a>
-              </div>
-            </div>
           </div>
           <div className="col-md-3 mb-4">
-            <div className="card">
-              <img
-                src="https://picsum.photos/id/26/300/200"
-                className="card-img-top"
-                alt="Product 3"
+              <ProductCard
+                imageUrl="https://picsum.photos/id/26/300/200"
+                productName="Product 3"
+                price={39.99}
               />
-              <div className="card-body">
-                <h5 className="card-title">Product 3</h5>
-                <p className="card-text">$39.99</p>
-                <a href="#" className="btn btn-primary">Add to Cart</a>
-              </div>
-            </div>
           </div>
           <div className="col-md-3 mb-4">
-            <div className="card">
-              <img
-                src="https://picsum.photos/id/96/300/200"
-                className="card-img-top"
-                alt="Product 4"
+              <ProductCard
+                imageUrl="https://picsum.photos/id/96/300/200"
+                productName="Product 4"
+                price={49.99}
               />
-              <div className="card-body">
-                <h5 className="card-title">Product 4</h5>
-                <p className="card-text">$49.99</p>
-                <a href="#" className="btn btn-primary">Add to Cart</a>
-              </div>
-            </div>
           </div>
         </div>
       </main>
