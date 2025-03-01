@@ -4,6 +4,20 @@ import ProductCard from "./ProductCard";
 import './styles.css';
 
 export default function App() {
+
+  function Button() {
+    const handleClick = () => {
+      console.log('Button clicked!');
+    };
+  
+    return (
+      <button onClick={handleClick}>
+        Click me
+      </button>
+    );
+  }
+
+
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
