@@ -6,14 +6,13 @@ import Navbar from './Navbar';
 import HomePage from './HomePage';
 import RegisterPage from './RegisterPage';
 import { Route, Switch } from 'wouter';
-import ProductsPage from './ProductPage';
+import ProductsPage from './ProductsPage';
 
 export default function App() {
 
   return (
     <>
       <Navbar />
-      <Header />
       <Switch>
         <Route path="/" component={HomePage} />
         <Route path="/products" component={ProductsPage} />

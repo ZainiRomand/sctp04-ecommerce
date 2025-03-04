@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ProductCard = (props) => {
+export default function ProductCard(props) {
 
   const handleAddToCart = () => {
     alert("Added to Cart!")
@@ -23,5 +23,3 @@ const ProductCard = (props) => {
     </div>
   );
 };
-
-export default ProductCard;
