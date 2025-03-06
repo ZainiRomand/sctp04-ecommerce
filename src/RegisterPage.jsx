@@ -5,7 +5,12 @@ import axios from 'axios';
 import { useLocation } from 'wouter';
 import { useState } from 'react'
 
+import { useFlashMessage } from './FlashMessageStore';
+
 export default function RegisterPage() {
+
+    const { showMessage } = useFlashMessage();
+
     const initialValues = {
         name: '',
         email: '',
@@ -19,19 +24,13 @@ export default function RegisterPage() {
     const [, setLocation] = useLocation();
     const [showSuccess, setShowSuccess] = useState(false);
 
-    const handleSubmit = async (values, formikHelpers) => {
-        try {
-            const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/register`, values);
-            console.log('Registration successful:', response.data);
-            setLocation("/");
-
-        } catch (error) {
-            console.error('Registration failed:', error.response?.data || error.message);
-            // Handle registration error (e.g., show error message)
-        } finally {
-            formikHelpers.setSubmitting(false);
-        }
-    };
+    // event handler that will be called automatically by Formik
+    // when the user submits the form
+    const handleSubmit = (values, formikHelpers) => {
+        console.log(values);
+        showMessage("Registration is successful", "success");
+        setLocation('/');
+    }
 
     const validationSchema = Yup.object({
         name: Yup.string().required('Name is required'),
