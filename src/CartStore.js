@@ -1,4 +1,5 @@
 import { atom, useAtom } from 'jotai';
+import Immutable from "seamless-immutable";
 
 // Define the initial state of the cart. We put in one piece of test data
 const initialCart = [
@@ -23,25 +24,61 @@ export const useCart = () => {
     // Function to calculate the total price of items in the cart
     const getCartTotal = () => {
         return cart.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2);
-        //const total = 0;
-        //for (let cartItem of cart) {
+        // const total = 0;
+        // for (let cartItem of cart) {
         //    total += cartItem.price
-        //}
-        //return total;
+        // }
+        // return total;
     };
 
     const addToCart = (product) => {
         setCart(currentCart => {
-            return currentCart.concat({
-                ...product,
-                quantity: 1
-            })
+            // find if the item already exists in the shopping item
+            // important - we assume `product_id` is the id of the product
+            const existingItemIndex = cart.findIndex(i => i.product_id === product.product_id);
+            if (existingItemIndex !== -1) {
+                let newQuantity = cart[existingItemIndex].quantity + 1;
+
+                // existing item
+                const modifiedCart = currentCart.setIn([existingItemIndex, 'quantity'], newQuantity);
+                return modifiedCart;
+            } else {
+                // new item
+                return currentCart.concat({
+                    ...product,
+                    quantity: 1
+                })
+            }
         })
+    }
+
+    const modifyQuantity = (product_id, quantity) => {
+        setCart((currentCart) => {
+            const existingItemIndex = currentCart.findIndex(item => item.product_id === product_id);
+            if (existingItemIndex !== -1) {
+
+                // check if the quantity will be reduced to 0 or less, if so remove the item
+                if (quantity < 0) {
+                    return currentCart.filter(item => item.product_id !== product_id);
+                } else {
+                    return currentCart.setIn([existingItemIndex, 'quantity'], quantity);
+                }
+
+            }
+        });
+    }
+
+    const removeFromCart = (product_id) => {
+        setCart((currentCart) => {
+            return currentCart.filter(item => item.product_id !== product_id);
+        });
     }
 
     return {
         cart,
         getCartTotal,
-        addToCart
+        addToCart,
+        modifyQuantity,
+        removeFromCart
     };
 };

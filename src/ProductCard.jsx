@@ -16,9 +16,10 @@ export default function ProductCard(props) {
       <div className="card-body">
         <h5 className="card-title">{props.productName}</h5>
         <p className="card-text">${props.price}</p>
-        <button className="btn btn-primary" onClick={handleAddToCart}>
-          Add to Cart
-        </button>
+        <a href="#" className="btn btn-primary" onClick={() => {
+          console.log("added to cart");
+          props.onAddToCart();
+        }}>Add to Cart</a>
       </div>
     </div>
   );
