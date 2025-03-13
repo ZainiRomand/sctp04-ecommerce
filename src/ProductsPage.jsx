@@ -16,11 +16,19 @@ export default function ProductsPage() {
             id: Math.floor(Math.random() * 9999 + 1),
             product_id: product.id,
             productName: product.name,
-            imageUrl: product.image,
+            quantity: 1,
             price: product.price,
+            imageUrl: product.image,
             description: product.description
+            // "id": null,
+            // "product_id": null,
+            // "quantity": null,
+            // "productName": null,
+            // "price": null,
+            // "imageUrl": null,
+            // "description": null
         });
-        showMessage("Product added to cart", "success");
+        showMessage("Product added to cart " + product.quantity, "success");
         setLocation("/cart");
     }
 
@@ -41,12 +49,12 @@ export default function ProductsPage() {
         <div className="container my-5">
             <h1 className="text-center mb-4">Our Products</h1>
             <div className="row">
-                {products.map(product => (
-                    <div key={product.id} className="col-md-4 mb-4">
+                {products.map(p => (
+                    <div key={p.id} className="col-md-4 mb-4">
                         <ProductCard
-                            imageUrl={product.image}
-                            productName={product.name}
-                            price={product.price.toFixed(2)}
+                            imageUrl={p.image}
+                            productName={p.name}
+                            price={p.price.toFixed(2)}
                             onAddToCart={() => {
                                 handleAddToCart(p)
                             }}
