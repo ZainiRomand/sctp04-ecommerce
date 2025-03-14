@@ -26,11 +26,25 @@ export default function RegisterPage() {
 
     // event handler that will be called automatically by Formik
     // when the user submits the form
-    const handleSubmit = (values, formikHelpers) => {
-        console.log(values);
-        showMessage("Registration is successful", "success");
-        setLocation('/');
-    }
+    // const handleSubmit = (values, formikHelpers) => {
+    //     console.log(values);
+    //     showMessage("Registration is successful", "success");
+    //     setLocation('/');
+    // }
+
+    const handleSubmit = async (values, formikHelpers) => {
+        try {
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/users/register`,
+                values
+            );
+            // Handle successful registration (e.g., redirect to login page)
+            showMessage("Registration is successful", "success");
+            setLocation('/');
+        } catch (err) {
+            console.log(err);
+            showMessage("Registration failed. Please try again.", "danger");
+        }
+    };
 
     const validationSchema = Yup.object({
         name: Yup.string().required('Name is required'),
