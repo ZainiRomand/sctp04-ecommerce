@@ -4,19 +4,23 @@
 }
 
 .flash-alert {
-    animation: fadeOut 2s ease forwards;
+    animation: fadeOut 3s ease forwards;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
 }
 
 @keyframes fadeOut {
     0% {
+        opacity: 0;
+    }
+
+    50% {
         opacity: 1;
     }
 
-    70% {
-        opacity: 1;
-    }
-
-    /* Stay fully visible for the first 70% of time */
+    /* Stay fully visible for the first 50% of time */
     100% {
         opacity: 0;
     }
