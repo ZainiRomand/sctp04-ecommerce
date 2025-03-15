@@ -36,7 +36,7 @@ export default function UserLogin() {
             .catch(e => {
                 console.error(e);
                 formikHelper.setSubmitting(false);
-                showMessage("User not found", 'danger');
+                showMessage("Login failed. User not found.", 'danger');
             });
 
         //     console.log(response.data);
