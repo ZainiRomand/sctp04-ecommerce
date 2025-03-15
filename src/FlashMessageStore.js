@@ -12,7 +12,7 @@ export const useFlashMessage = () => {
     const showMessage = (message, type='info') => {
         setFlashMessage({
             message, //Same as 'message':message
-            type        // RHS must be a variable
+            type     // RHS must be a variable
         })
     }
 

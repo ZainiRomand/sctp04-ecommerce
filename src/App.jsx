@@ -4,6 +4,8 @@ import './styles.css';
 import Navbar from './Navbar';
 import HomePage from './HomePage';
 import RegisterPage from './RegisterPage';
+import UserProfile from './UserProfile';
+import UserLogin from './UserLogin';
 import { Route, Switch } from 'wouter';
 import ProductsPage from './ProductsPage';
 import { useFlashMessage } from './FlashMessageStore';
@@ -38,6 +40,8 @@ export default function App() {
         <Route path="/products" component={ProductsPage} />
         <Route path="/cart" component={ShoppingCart} />
         <Route path="/register" component={RegisterPage} />
+        <Route path="/login" component={UserLogin} />
+        <Route path="/profile" component={UserProfile} />
       </Switch>
       <Footer />
     </>

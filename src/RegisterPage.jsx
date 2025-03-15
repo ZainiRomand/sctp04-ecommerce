@@ -57,6 +57,7 @@ export default function RegisterPage() {
         country: Yup.string().required('Country is required'),
     });
 
+
     return (
         <div className="container mt-5">
             <h1>Register</h1>
@@ -66,7 +67,7 @@ export default function RegisterPage() {
                 onSubmit={handleSubmit}
             >
                 {(formik) => (
-                    <Form>
+                    <Form className="mb-3">
                         <div className="mb-3">
                             <label htmlFor="name" className="form-label">Name</label>
                             <Field
@@ -203,5 +204,6 @@ export default function RegisterPage() {
                 )}
             </Formik>
         </div>
-    );
+    )
+
 }

@@ -28,7 +28,7 @@ export default function ProductsPage() {
             // "imageUrl": null,
             // "description": null
         });
-        showMessage("Product added to cart " + product.quantity, "success");
+        showMessage("Product added to cart", "success");
         setLocation("/cart");
     }
 
