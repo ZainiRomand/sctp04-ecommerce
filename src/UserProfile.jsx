@@ -19,6 +19,8 @@ export default function UserProfile() {
                     Authorization: `Bearer ${token}`
                 }
             })
+            console.log(" at useEffect");
+            console.log(response.data.user);
             setInitialValues(response.data.user);
         }
         fetchData();
@@ -56,10 +58,10 @@ export default function UserProfile() {
             actions.setSubmitting(false);
         }
     };
-    
-    const handleDeleteAccount = async () =>{
+
+    const handleDeleteAccount = async () => {
         const token = getJwt();
-        await axios.delete(import.meta.env.VITE_API_URL + "/api/users/me",{
+        await axios.delete(import.meta.env.VITE_API_URL + "/api/users/me", {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -113,6 +115,7 @@ export default function UserProfile() {
                                 <ErrorMessage name="marketingPreferences" component="div" className="text-danger" />
                             </div>
 
+
                             <div className="mb-3">
                                 <label htmlFor="country" className="form-label">Country</label>
                                 <Field as="select" className="form-select" id="country" name="country">
@@ -134,7 +137,7 @@ export default function UserProfile() {
                     );
                 }}
             </Formik>
-          <button class="btn btn-danger" onClick={handleDeleteAccount}>Delete Account</button>
+            <button className="btn btn-danger" onClick={handleDeleteAccount}>Delete Account</button>
         </div>
     )
 }

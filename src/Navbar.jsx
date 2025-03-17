@@ -57,6 +57,9 @@ export default function Navbar() {
                                 <Link href="/login" className={`nav-link ${location === '/register' ? 'active' : ''}`}>Login</Link>
                             </li>
                             <li className="nav-item">
+                                <Link href="/logout" className={`nav-link ${location === '/logout' ? 'active' : ''}`}>Logout</Link>
+                            </li>
+                            <li className="nav-item">
                                 <Link href="/profile" className={`nav-link ${location === '/profile' ? 'active' : ''}`}>Profile</Link>
                             </li>
                         </ul>

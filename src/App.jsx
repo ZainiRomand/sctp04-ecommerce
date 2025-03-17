@@ -10,6 +10,7 @@ import { Route, Switch } from 'wouter';
 import ProductsPage from './ProductsPage';
 import { useFlashMessage } from './FlashMessageStore';
 import ShoppingCart from './ShoppingCart';
+import UserLogout from './UserLogout';
 
 export default function App() {
 
@@ -41,6 +42,7 @@ export default function App() {
         <Route path="/cart" component={ShoppingCart} />
         <Route path="/register" component={RegisterPage} />
         <Route path="/login" component={UserLogin} />
+        <Route path="/logout" component={UserLogout} />
         <Route path="/profile" component={UserProfile} />
       </Switch>
       <Footer />
