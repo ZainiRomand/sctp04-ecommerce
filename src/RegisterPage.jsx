@@ -17,8 +17,8 @@ export default function RegisterPage() {
         password: '',
         confirmPassword: '',
         salutation: '',
-        marketingPreferences: [],
-        country: ''
+        country: '',
+        marketingPreferences: []
     };
 
     const [, setLocation] = useLocation();
@@ -205,5 +205,4 @@ export default function RegisterPage() {
             </Formik>
         </div>
     )
-
 }

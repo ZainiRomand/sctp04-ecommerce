@@ -11,6 +11,14 @@
     width: 100%;
 }
 
+.flash-confirm {
+    animation: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
 @keyframes fadeOut {
     0% {
         opacity: 0.5;

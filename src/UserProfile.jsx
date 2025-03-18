@@ -3,13 +3,14 @@ import axios from 'axios';
 import { useJwt } from "./UserStore";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useFlashMessage } from './FlashMessageStore';
+import { atom, useAtom } from 'jotai';
 import * as Yup from 'yup';
 
 export default function UserProfile() {
     const { getJwt } = useJwt();
     const [initialValues, setInitialValues] = useState({});
     const { showMessage } = useFlashMessage();
-
+    const [modal, setModal] = useState([]);
 
     useEffect(() => {
         async function fetchData() {
@@ -23,8 +24,8 @@ export default function UserProfile() {
             console.log(response.data.user);
             setInitialValues(response.data.user);
         }
-        fetchData();
 
+        fetchData();
     }, []);
 
     const validationSchema = Yup.object({
@@ -39,25 +40,36 @@ export default function UserProfile() {
         try {
             const token = getJwt();
             if (!token) {
-                showMessage('You must be logged in to update your profile.', 'error');
+                showMessage('You must be logged in to update your profile.', 'danger');
                 actions.setSubmitting(false);
                 return;
             }
 
-            await axios.put(import.meta.env.VITE_API_URL + '/api/users/me', values, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
+            const userConfirmed = confirm("Proceed to update profile?");
+            if (userConfirmed) {
+                await axios.put(import.meta.env.VITE_API_URL + '/api/users/me', values, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
 
-            showMessage('Profile updated successfully!', 'success');
-            actions.setSubmitting(false);
+                showMessage('Profile updated successfully!', 'success');
+                actions.setSubmitting(false);
+            }
         } catch (error) {
             console.error('Error updating profile:', error);
             actions.setErrors({ submit: error.response?.data?.message || 'An error occurred' });
             actions.setSubmitting(false);
         }
     };
+
+    const handleOnConfirm = async () => {
+        setModal(state)
+    }
+
+    const handleOnCancel = async () => {
+
+    }
 
     const handleDeleteAccount = async () => {
         const token = getJwt();
@@ -107,14 +119,32 @@ export default function UserProfile() {
                             </div>
 
                             <div className="mb-3">
-                                <label htmlFor="marketingPreferences" className="form-label">Marketing Preferences</label>
-                                <Field as="select" id="marketingPreferences" name="marketingPreferences" multiple className="form-control">
-                                    <option value="email">Email</option>
-                                    <option value="sms">SMS</option>
-                                </Field>
-                                <ErrorMessage name="marketingPreferences" component="div" className="text-danger" />
+                                <label className="form-label">Marketing Preferences</label>
+                                <div className="form-check">
+                                    <Field
+                                        className="form-check-input"
+                                        type="checkbox"
+                                        id="emailMarketing"
+                                        name="marketingPreferences"
+                                        value="email"
+                                    />
+                                    <label className="form-check-label" htmlFor="emailMarketing">
+                                        Email Marketing
+                                    </label>
+                                </div>
+                                <div className="form-check">
+                                    <Field
+                                        className="form-check-input"
+                                        type="checkbox"
+                                        id="smsMarketing"
+                                        name="marketingPreferences"
+                                        value="sms"
+                                    />
+                                    <label className="form-check-label" htmlFor="smsMarketing">
+                                        SMS Marketing
+                                    </label>
+                                </div>
                             </div>
-
 
                             <div className="mb-3">
                                 <label htmlFor="country" className="form-label">Country</label>
@@ -129,15 +159,25 @@ export default function UserProfile() {
                             </div>
 
                             {formik.errors.submit && <div className="alert alert-danger">{formik.errors.submit}</div>}
-
-                            <button type="submit" className="btn btn-primary" disabled={formik.isSubmitting}>
-                                {formik.isSubmitting ? 'Updating...' : 'Update Profile'}
-                            </button>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <button type="submit" className="btn btn-primary m-3" disabled={formik.isSubmitting}>
+                                                {formik.isSubmitting ? 'Updating...' : 'Update Profile'}
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button className="btn btn-danger m-3" disabled={formik.isSubmitting} onClick={handleDeleteAccount}>Delete Account</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </Form>
                     );
                 }}
             </Formik>
-            <button className="btn btn-danger" onClick={handleDeleteAccount}>Delete Account</button>
+
         </div>
     )
 }
