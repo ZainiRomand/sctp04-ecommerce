@@ -10,7 +10,8 @@ export default function UserProfile() {
     const { getJwt } = useJwt();
     const [initialValues, setInitialValues] = useState({});
     const { showMessage } = useFlashMessage();
-    const [modal, setModal] = useState([]);
+    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+    const [showUpdateDialog, setShowUpdateDialog] = useState(false);
 
     useEffect(() => {
         async function fetchData() {
@@ -36,26 +37,40 @@ export default function UserProfile() {
         country: Yup.string(),
     });
 
+    const onUpdateProfile = () => {
+        console.log('update clicked');
+        const token = getJwt();
+        if (!token) {
+            showMessage('You are not logged in.', 'danger');
+            return;
+        }
+
+        setShowUpdateDialog(true);
+        console.log(showUpdateDialog);
+    }
+
+    const onConfirmUpdate = (actions) => {
+        handleSubmit();
+        setShowUpdateDialog(false);
+        actions.setSubmitting(false);
+    }
+
+    const onCancelUpdate = (actions) => {
+        setShowUpdateDialog(false);
+        actions.setSubmitting(false);
+    }
+
     const handleSubmit = async (values, actions) => {
         try {
-            const token = getJwt();
-            if (!token) {
-                showMessage('You must be logged in to update your profile.', 'danger');
-                actions.setSubmitting(false);
-                return;
-            }
+            await axios.put(import.meta.env.VITE_API_URL + '/api/users/me', values, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
 
-            const userConfirmed = confirm("Proceed to update profile?");
-            if (userConfirmed) {
-                await axios.put(import.meta.env.VITE_API_URL + '/api/users/me', values, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
+            showMessage('Profile updated successfully!', 'success');
+            actions.setSubmitting(false);
 
-                showMessage('Profile updated successfully!', 'success');
-                actions.setSubmitting(false);
-            }
         } catch (error) {
             console.error('Error updating profile:', error);
             actions.setErrors({ submit: error.response?.data?.message || 'An error occurred' });
@@ -63,16 +78,28 @@ export default function UserProfile() {
         }
     };
 
-    const handleOnConfirm = async () => {
-        setModal(state)
+    const onConfirmDelete = () => {
+        handleDeleteAccount();
+        setShowDeleteDialog(false);
     }
 
-    const handleOnCancel = async () => {
+    const onCancelDelete = () => {
+        setShowDeleteDialog(false);
+    }
 
+    const onDeleteAccount = () => {
+        console.log('delete clicked');
+        const token = getJwt();
+        if (!token) {
+            showMessage('You are not logged in.', 'danger');
+            return;
+        }
+
+        setShowDeleteDialog(true);
+        console.log(showDeleteDialog);
     }
 
     const handleDeleteAccount = async () => {
-        const token = getJwt();
         await axios.delete(import.meta.env.VITE_API_URL + "/api/users/me", {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -88,12 +115,40 @@ export default function UserProfile() {
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
-                onSubmit={handleSubmit}
+                onSubmit={onUpdateProfile}
                 enableReinitialize // Allows form to reinitialize with fetched profile data
             >
                 {function (formik) {
                     return (
                         <Form>
+                            <div className="container mt-5 mb-3">
+                                {
+                                    showDeleteDialog &&
+                                    <div className="overlay">
+                                        <div className="dialog">
+                                            <h4>Proceed to delete account?</h4>
+                                            <div>
+                                                <button className="btn btn-primary m-2" onClick={onConfirmDelete}>Yes</button>
+                                                <button className="btn btn-secondary m-2" onClick={onCancelDelete}>No</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            <div className="container mt-5 mb-3">
+                                {
+                                    showUpdateDialog &&
+                                    <div className="overlay">
+                                        <div className="dialog">
+                                            <h4>Proceed to update account?</h4>
+                                            <div>
+                                                <button className="btn btn-primary m-2" onClick={onConfirmUpdate}>Yes</button>
+                                                <button className="btn btn-secondary m-2" onClick={onCancelUpdate}>No</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
                             <div className="mb-3">
                                 <label htmlFor="name" className="form-label">Name</label>
                                 <Field type="text" id="name" name="name" className="form-control" />
@@ -168,7 +223,7 @@ export default function UserProfile() {
                                             </button>
                                         </td>
                                         <td>
-                                            <button className="btn btn-danger m-3" disabled={formik.isSubmitting} onClick={handleDeleteAccount}>Delete Account</button>
+                                            <button type="button" className="btn btn-danger m-3" disabled={formik.isSubmitting} onClick={onDeleteAccount}>Delete Account</button>
                                         </td>
                                     </tr>
                                 </tbody>

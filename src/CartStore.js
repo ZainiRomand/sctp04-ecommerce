@@ -14,8 +14,7 @@ import { produce } from 'immer';
 //     },
 // ]
 
-const initialCart = [
-]
+const initialCart = []
 
 
 // create an atom for the shopping cart (atom == shared state)
@@ -59,7 +58,7 @@ export const useCart = () => {
 
                 // only need to return draft if it is a primitive (i.e, not array or not object)
                 //return draft;
-           
+
             })
 
             // whatever is returned from the updateFuncFunction will be the new value of the shopping cart
@@ -72,11 +71,11 @@ export const useCart = () => {
         setCart(updateCartFunc);
     }
 
-    
+
     const modifyQuantity = (product_id, quantity) => {
 
         const updateCartFunc = (prevCart) => {
-            const modifiedCart = produce(prevCart, (draft)=>{
+            const modifiedCart = produce(prevCart, (draft) => {
 
                 // find the index of the product that we are updating
                 const existingIndex = prevCart.findIndex(cartItem => cartItem.product_id === product_id);
@@ -91,7 +90,7 @@ export const useCart = () => {
                         draft.splice(existingIndex, 1);
                     }
 
-                  
+
                 }
 
             })
@@ -108,10 +107,10 @@ export const useCart = () => {
 
             // produce will call the recipe function (the arrow function in the second parameter)
             // and pass prevCart as draft, and whatever changes is made to draft, it will return as the new  value
-            const modified = produce(prevCart, (draft)=>{
-              
+            const modified = produce(prevCart, (draft) => {
+
                 // find the index of the product that we are updating
-                const existingIndex = prevCart.findIndex(cartItem => cartItem.product_id === product_id);   
+                const existingIndex = prevCart.findIndex(cartItem => cartItem.product_id === product_id);
 
                 if (existingIndex !== -1) {
                     draft.splice(existingIndex, 1);
