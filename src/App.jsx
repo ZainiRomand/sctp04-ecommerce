@@ -11,41 +11,44 @@ import ProductsPage from './ProductsPage';
 import { useFlashMessage } from './FlashMessageStore';
 import ShoppingCart from './ShoppingCart';
 import UserLogout from './UserLogout';
+import { AuthProvider } from './AuthContext';
 
 export default function App() {
 
-  const {getMessage, clearMessage} = useFlashMessage();
-  const flashMessage =  getMessage();
+  const { getMessage, clearMessage } = useFlashMessage();
+  const flashMessage = getMessage();
 
   useEffect(() => {
-  const timer = setTimeout(()=>{
-    clearMessage();
-  },3000);
+    const timer = setTimeout(() => {
+      clearMessage();
+    }, 3000);
 
-  return () => {
-    clearTimeout(timer);
-  }
+    return () => {
+      clearTimeout(timer);
+    }
 
   }, [flashMessage]);
 
   return (
     <>
-      <Navbar />
-      {flashMessage.message && (
-        <div className={`alert alert-${flashMessage.type} text-center flash-alert`} role="alert">
-          {flashMessage.message}
-        </div>
-      )}
-      <Switch>
-        <Route path="/" component={HomePage} />
-        <Route path="/products" component={ProductsPage} />
-        <Route path="/cart" component={ShoppingCart} />
-        <Route path="/register" component={RegisterPage} />
-        <Route path="/login" component={UserLogin} />
-        <Route path="/logout" component={UserLogout} />
-        <Route path="/profile" component={UserProfile} />
-      </Switch>
-      <Footer />
+      <AuthProvider>
+        <Navbar />
+        {flashMessage.message && (
+          <div className={`alert alert-${flashMessage.type} text-center flash-alert`} role="alert">
+            {flashMessage.message}
+          </div>
+        )}
+        <Switch>
+          <Route path="/" component={HomePage} />
+          <Route path="/products" component={ProductsPage} />
+          <Route path="/cart" component={ShoppingCart} />
+          <Route path="/register" component={RegisterPage} />
+          <Route path="/login" component={UserLogin} />
+          <Route path="/logout" component={UserLogout} />
+          <Route path="/profile" component={UserProfile} />
+        </Switch>
+        <Footer />
+      </AuthProvider>
     </>
   )
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useJwt } from "./UserStore";
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field, ErrorMessage, useFormikContext } from 'formik';
 import { useFlashMessage } from './FlashMessageStore';
 import { atom, useAtom } from 'jotai';
 import * as Yup from 'yup';
@@ -37,31 +37,15 @@ export default function UserProfile() {
         country: Yup.string(),
     });
 
-    const onUpdateProfile = () => {
-        console.log('update clicked');
-        const token = getJwt();
-        if (!token) {
-            showMessage('You are not logged in.', 'danger');
-            return;
-        }
-
-        setShowUpdateDialog(true);
-        console.log(showUpdateDialog);
-    }
-
-    const onConfirmUpdate = (actions) => {
-        handleSubmit();
-        setShowUpdateDialog(false);
-        actions.setSubmitting(false);
-    }
-
-    const onCancelUpdate = (actions) => {
-        setShowUpdateDialog(false);
-        actions.setSubmitting(false);
-    }
-
     const handleSubmit = async (values, actions) => {
         try {
+            console.log('update clicked');
+            const token = getJwt();
+            if (!token) {
+                showMessage('You are not logged in.', 'danger');
+                return;
+            }
+
             await axios.put(import.meta.env.VITE_API_URL + '/api/users/me', values, {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -100,6 +84,11 @@ export default function UserProfile() {
     }
 
     const handleDeleteAccount = async () => {
+        const token = getJwt();
+        if (!token) {
+            showMessage('You are not logged in.', 'danger');
+            return;
+        }
         await axios.delete(import.meta.env.VITE_API_URL + "/api/users/me", {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -115,7 +104,7 @@ export default function UserProfile() {
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
-                onSubmit={onUpdateProfile}
+                onSubmit={handleSubmit}
                 enableReinitialize // Allows form to reinitialize with fetched profile data
             >
                 {function (formik) {
@@ -130,20 +119,6 @@ export default function UserProfile() {
                                             <div>
                                                 <button className="btn btn-primary m-2" onClick={onConfirmDelete}>Yes</button>
                                                 <button className="btn btn-secondary m-2" onClick={onCancelDelete}>No</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
-                            </div>
-                            <div className="container mt-5 mb-3">
-                                {
-                                    showUpdateDialog &&
-                                    <div className="overlay">
-                                        <div className="dialog">
-                                            <h4>Proceed to update account?</h4>
-                                            <div>
-                                                <button className="btn btn-primary m-2" onClick={onConfirmUpdate}>Yes</button>
-                                                <button className="btn btn-secondary m-2" onClick={onCancelUpdate}>No</button>
                                             </div>
                                         </div>
                                     </div>

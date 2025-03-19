@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useAuth } from './AuthContext';
 import { Link, useLocation } from 'wouter';
 
 export default function Navbar() {
+    const { isLoggedIn, login, logout } = useAuth();
 
     const [isNavbarShowing, setNavbarShowing] = useState(false);
 
@@ -50,18 +52,18 @@ export default function Navbar() {
                             <li className="nav-item">
                                 <Link href="/cart" className={`nav-link ${location === '/cart' ? 'active' : ''}`}>Cart</Link>
                             </li>
-                            <li className="nav-item">
+                            {!isLoggedIn && <li className="nav-item">
                                 <Link href="/register" className={`nav-link ${location === '/register' ? 'active' : ''}`}>Register</Link>
-                            </li>
-                            <li className="nav-item">
+                            </li>}
+                            {!isLoggedIn && <li className="nav-item">
                                 <Link href="/login" className={`nav-link ${location === '/register' ? 'active' : ''}`}>Login</Link>
-                            </li>
-                            <li className="nav-item">
+                            </li>}
+                            {isLoggedIn && <li className="nav-item">
                                 <Link href="/logout" className={`nav-link ${location === '/logout' ? 'active' : ''}`}>Logout</Link>
-                            </li>
-                            <li className="nav-item">
+                            </li>}
+                            {isLoggedIn && <li className="nav-item">
                                 <Link href="/profile" className={`nav-link ${location === '/profile' ? 'active' : ''}`}>Profile</Link>
-                            </li>
+                            </li>}
                         </ul>
                     </div>
                 </div>

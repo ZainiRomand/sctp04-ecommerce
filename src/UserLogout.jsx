@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useAuth } from './AuthContext';
 import { useJwt } from './UserStore';
 import { useFlashMessage } from './FlashMessageStore';
 import { useLocation } from 'wouter';
 
 export default function UserLogout() {
+    const { isLoggedIn, login, logout } = useAuth();
     const { getJwt, clearJwt } = useJwt();
     const { showMessage } = useFlashMessage();
     const [showDialog, setShowDialog] = useState(false);
@@ -23,6 +25,7 @@ export default function UserLogout() {
 
     const onConfirm = () => {
         handleLogout();
+        logout();
         setShowDialog(false);
     }
 
@@ -42,14 +45,14 @@ export default function UserLogout() {
             {
                 showDialog &&
                 <div className="overlay">
-                <div className="dialog">
-                  <h4>Proceed to logout from E-Shop?</h4>
-                  <div>
-                    <button className="btn btn-primary m-2" onClick={onConfirm}>Yes</button>
-                    <button className="btn btn-secondary m-2" onClick={onCancel}>No</button>
-                  </div>
+                    <div className="dialog">
+                        <h4>Proceed to logout from E-Shop?</h4>
+                        <div>
+                            <button className="btn btn-primary m-2" onClick={onConfirm}>Yes</button>
+                            <button className="btn btn-secondary m-2" onClick={onCancel}>No</button>
+                        </div>
+                    </div>
                 </div>
-              </div>
             }
             <button type="submit" className="btn btn-primary" onClick={confirmLogout}>Logout</button>
         </div>

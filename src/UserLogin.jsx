@@ -1,4 +1,5 @@
 import React from 'react';
+import { useAuth } from './AuthContext';
 import { Formik, Form, Field, ErrorMessage, yupToFormErrors } from 'formik';
 import * as Yup from 'yup';
 import { useFlashMessage } from './FlashMessageStore';
@@ -7,8 +8,8 @@ import { useJwt } from "./UserStore";
 import { useLocation } from 'wouter';
 
 export default function UserLogin() {
-
     // React hooks must be at the top of the component function
+    const { isLoggedIn, login, logout } = useAuth();
     const { showMessage } = useFlashMessage();
     const { setJwt } = useJwt();
     const [, setLocation] = useLocation();
@@ -30,6 +31,7 @@ export default function UserLogin() {
                 console.log(response.data);
                 setJwt(response.data.token);
                 showMessage('Login successful', 'success');
+                login();
                 formikHelper.setSubmitting(false); // <-- indicate the form has finished submission
                 setLocation("/");
             })
