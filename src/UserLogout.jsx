@@ -35,7 +35,7 @@ export default function UserLogout() {
 
     const handleLogout = () => {
         clearJwt();
-        setLocation("/login");
+        setLocation("/");
         showMessage("You have successfully logout from E-Shop", "success");
     }
 

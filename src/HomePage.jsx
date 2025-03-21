@@ -42,7 +42,7 @@ export default function HomePage() {
                 <div className="container">
                     <h1 className="display-4">Welcome to E-Shop</h1>
                     <p className="lead">Discover amazing products at unbeatable prices!</p>
-                    <a href="#" className="btn btn-light btn-lg">Shop Now</a>
+                    <a href="/products" className="btn btn-light btn-lg">Shop Now</a>
                 </div>
             </header>
 
