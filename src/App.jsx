@@ -12,6 +12,8 @@ import { useFlashMessage } from './FlashMessageStore';
 import ShoppingCart from './ShoppingCart';
 import UserLogout from './UserLogout';
 import { AuthProvider } from './AuthContext';
+import SuccessPayment from "./SuccessPayment";
+import CancelledPayment from "./CancelledPayment";
 
 export default function App() {
 
@@ -46,6 +48,8 @@ export default function App() {
           <Route path="/login" component={UserLogin} />
           <Route path="/logout" component={UserLogout} />
           <Route path="/profile" component={UserProfile} />
+          <Route path="/success_payment" component={SuccessPayment}/>
+          <Route path="/cancelled_payment" component={CancelledPayment}/>
         </Switch>
         <Footer />
       </AuthProvider>
