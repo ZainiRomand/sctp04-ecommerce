@@ -11,6 +11,6 @@ Currently, two official plugins are available:
 
 If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
 
-File->Preferences->Settings "liveServer.settings.port": 5173
+File->Preferences->Settings "liveServer.settings.port": 5175
 Add Port 5173 for Forwarded Address
-Change Port Protocol to HTTP
+Set to public
